@@ -25,6 +25,7 @@ export type World = {
   sizeMeters: number; // world is a square from -size/2..+size/2 on X and Y
   heightMeters: number;
   restrictedZones: RestrictedZone[];
+  gridStepMeters?: number;
 };
 
 export type CollisionRisk = {
@@ -66,6 +67,7 @@ export type SimulationState = {
   running: boolean;
   settings: SimulationSettings;
   lastTickAt?: number;
+  selectedUavId?: string | null;
 };
 
 export type SteeringCommand = {

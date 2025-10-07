@@ -9,6 +9,7 @@ export async function POST(req: Request) {
   - Immediate safety advisories (collisions/geofencing)
   - Suggested heading/altitude changes for top 3 risky UAVs
   - One-paragraph summary for the operator
+  - keep the paragraph short and concise
 
   UAVs (JSON): ${JSON.stringify(uavs).slice(0, 10000)}
   Zones (JSON): ${JSON.stringify(zones).slice(0, 4000)}

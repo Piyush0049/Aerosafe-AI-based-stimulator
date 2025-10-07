@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSession, signIn, signOut } from "next-auth/react";
-import { Plane, LogIn, LogOut, Shield, Github, Map } from "lucide-react";
+import { Plane, LogIn, LogOut, Shield, Home, Edit, Globe, Globe2Icon } from "lucide-react";
 
 export function Header() {
   const { data: session } = useSession();
@@ -14,22 +14,40 @@ export function Header() {
         <div className="flex items-center gap-2">
           <Plane size={18} className="text-emerald-600" />
           <Link href="/" className="font-semibold">AeroSafe</Link>
-          <nav className="hidden sm:flex items-center gap-4 ml-6 text-sm text-black/70 dark:text-white/70">
-            <Link href="/" className="hover:text-black dark:hover:text-white flex items-center gap-1"><Map size={16}/>Home</Link>
-            <Link href="/sim" className="hover:text-black dark:hover:text-white flex items-center gap-1"><Map size={16}/>Simulator</Link>
-            <Link href="https://github.com" target="_blank" className="hover:text-black dark:hover:text-white flex items-center gap-1"><Github size={16}/>GitHub</Link>
+          <nav className="hidden sm:flex items-center gap-7 ml-6 text-sm text-black/70 dark:text-white/70">
+            <Link href="/" className="hover:text-black dark:hover:text-white flex items-center gap-1">
+              <Home size={16}/>Home
+            </Link>
+            <Link href="/design" className="hover:text-black dark:hover:text-white flex items-center gap-1">
+              <Edit size={16}/>Design 2D
+            </Link>
+            <Link href="/design3d" className="hover:text-black dark:hover:text-white flex items-center gap-1">
+              <Edit size={16}/>Design 3D
+            </Link>
+            <Link href="/worlds" className="hover:text-black dark:hover:text-white flex items-center gap-1">
+              <Globe size={16}/>Worlds
+            </Link>
+            <Link href="/sim-babylon" className="hover:text-black dark:hover:text-white flex items-center gap-1">
+              <Globe2Icon size={16}/>3D Alt
+            </Link>
           </nav>
         </div>
         <div className="flex items-center gap-3">
           {isAuthed ? (
             <>
               <div className="text-sm hidden sm:block">{session?.user?.email}</div>
-              <button onClick={() => signOut()} className="px-3 py-1.5 rounded-md bg-slate-800 text-white text-sm hover:bg-slate-900 flex items-center gap-1"><LogOut size={16}/>Logout</button>
+              <button onClick={() => signOut()} className="px-3 py-1.5 rounded-md bg-slate-800 text-white text-sm hover:bg-slate-900 flex items-center gap-1">
+                <LogOut size={16}/>Logout
+              </button>
             </>
           ) : (
             <div className="flex items-center gap-2">
-              <Link href="/auth/login" className="px-3 py-1.5 rounded-md bg-slate-800 text-white text-sm hover:bg-slate-900 flex items-center gap-1"><LogIn size={16}/>Login</Link>
-              <Link href="/auth/signup" className="px-3 py-1.5 rounded-md bg-emerald-600 text-white text-sm hover:bg-emerald-700 flex items-center gap-1"><Shield size={16}/>Sign up</Link>
+              <Link href="/auth/login" className="px-3 py-1.5 rounded-md bg-slate-800 text-white text-sm hover:bg-slate-900 flex items-center gap-1">
+                <LogIn size={16}/>Login
+              </Link>
+              <Link href="/auth/signup" className="px-3 py-1.5 rounded-md bg-emerald-600 text-white text-sm hover:bg-emerald-700 flex items-center gap-1">
+                <Shield size={16}/>Sign up
+              </Link>
             </div>
           )}
         </div>
@@ -37,5 +55,3 @@ export function Header() {
     </div>
   );
 }
-
-

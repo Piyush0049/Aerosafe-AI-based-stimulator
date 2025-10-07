@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { nanoid } from "nanoid/non-secure";
 import { stepSimulation } from "@/lib/engine";
-import { vec, type Alert, type SimulationSettings, type SimulationState, type Uav, type World } from "@/lib/types";
+import { vec, type Alert, type SimulationSettings, type SimulationState, type Uav, type World, type RestrictedZone, add, sub, length, normalize, mul } from "@/lib/types";
 
 function randomBetween(min: number, max: number) { return Math.random() * (max - min) + min; }
 
@@ -23,6 +23,7 @@ function defaultWorld(): World {
   return {
     sizeMeters,
     heightMeters: 300,
+    gridStepMeters: 100,
     restrictedZones: [
       {
         id: "Z1",
@@ -55,6 +56,13 @@ type SimActions = {
   tickDt: (dt: number) => void;
   pushAlerts: (alerts: Alert[]) => void;
   setSetting: <K extends keyof SimulationSettings>(key: K, value: SimulationSettings[K]) => void;
+  addZone: (zone: Omit<RestrictedZone, "id"> & { id?: string }) => void;
+  removeZone: (id: string) => void;
+  setGridStep: (meters: number) => void;
+  applyWorld: (world: World) => void;
+  setSelectedUav: (id: string | null) => void;
+  holdUav: (id: string) => void;
+  returnUav: (id: string, target?: { x: number; y: number; z: number }) => void;
 };
 
 export const useSimStore = create<SimulationState & SimActions>((set, get) => ({
@@ -64,6 +72,7 @@ export const useSimStore = create<SimulationState & SimActions>((set, get) => ({
   running: false,
   settings: defaultSettings,
   lastTickAt: undefined,
+  selectedUavId: undefined as any,
 
   start: () => {
     const { running, uavs, settings, world } = get();
@@ -117,6 +126,19 @@ export const useSimStore = create<SimulationState & SimActions>((set, get) => ({
     }
     return { settings: nextSettings, uavs: nextUavs };
   }),
+  addZone: (zone) => set((state) => ({ world: { ...state.world, restrictedZones: [...state.world.restrictedZones, { id: zone.id || `Z${state.world.restrictedZones.length + 1}`, name: zone.name, polygon: zone.polygon }] } })),
+  removeZone: (id) => set((state) => ({ world: { ...state.world, restrictedZones: state.world.restrictedZones.filter((z) => z.id !== id) } })),
+  setGridStep: (meters) => set((state) => ({ world: { ...state.world, gridStepMeters: meters } })),
+  applyWorld: (world) => set((state) => ({ world })),
+  setSelectedUav: (id) => set({ selectedUavId: id as any }),
+  holdUav: (id) => set((state) => ({ uavs: state.uavs.map((u) => (u.id === id ? { ...u, velocity: vec(0, 0, 0) } : u)) })),
+  returnUav: (id, target = { x: 0, y: 0, z: 60 }) => set((state) => ({
+    uavs: state.uavs.map((u) => {
+      if (u.id !== id) return u;
+      const dir = normalize(sub(target, u.position));
+      return { ...u, velocity: mul(dir, u.maxSpeed * 0.8) };
+    }),
+  })),
 }));
 
 
