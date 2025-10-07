@@ -25,16 +25,16 @@ function defaultWorld(): World {
     heightMeters: 300,
     gridStepMeters: 100,
     restrictedZones: [
-      {
-        id: "Z1",
-        name: "No-Fly Central",
-        polygon: [vec(-200, -200, 0), vec(200, -200, 0), vec(200, 200, 0), vec(-200, 200, 0)],
-      },
-      {
-        id: "Z2",
-        name: "Runway",
-        polygon: [vec(-600, 300, 0), vec(600, 300, 0), vec(600, 450, 0), vec(-600, 450, 0)],
-      },
+      // {
+      //   id: "Z1",
+      //   name: "No-Fly Central",
+      //   polygon: [vec(-200, -200, 0), vec(200, -200, 0), vec(200, 200, 0), vec(-200, 200, 0)],
+      // },
+      // {
+      //   id: "Z2",
+      //   name: "Runway",
+      //   polygon: [vec(-600, 300, 0), vec(600, 300, 0), vec(600, 450, 0), vec(-600, 450, 0)],
+      // },
     ],
   };
 }

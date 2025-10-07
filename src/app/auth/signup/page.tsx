@@ -1,8 +1,10 @@
 "use client";
 
+import { signIn } from "next-auth/react";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { FcGoogle } from "react-icons/fc"; // full-color Google logo
 
 export default function SignupPage() {
   const [name, setName] = useState("");
@@ -25,6 +27,10 @@ export default function SignupPage() {
       <div className="w-full max-w-md rounded-xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-white/5 backdrop-blur p-6">
         <h1 className="text-xl font-semibold mb-2">Create your account</h1>
         <p className="text-sm text-black/60 dark:text-white/60 mb-4">Start simulating with AeroSafe</p>
+        <button onClick={() => signIn("google", { callbackUrl: "/" })} className="w-full mb-4 px-3 py-2 rounded-md bg-white text-black border border-black/10 hover:bg-slate-50 flex items-center justify-center gap-2">
+          <FcGoogle size={18}/> Continue with Google
+        </button>
+        <div className="text-xs text-center uppercase text-black/40 dark:text-white/40 mb-4">or</div>
         <form onSubmit={onSubmit} className="space-y-3">
           <label className="block">
             <div className="text-xs mb-1">Name</div>
@@ -46,5 +52,3 @@ export default function SignupPage() {
     </div>
   );
 }
-
-
