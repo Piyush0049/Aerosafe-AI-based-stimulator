@@ -30,7 +30,7 @@ export function AiPanel() {
   };
 
   return (
-    <div className="rounded-xl border border-black/10 dark:border-white/10 bg-white/80 dark:bg-white/5 p-4 backdrop-blur-sm shadow-sm">
+    <div className="rounded-b-xl border border-black/10 dark:border-white/10 bg-white/80 dark:bg-white/5 p-4 backdrop-blur-sm shadow-sm">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse" />

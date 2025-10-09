@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { nanoid } from "nanoid/non-secure";
 import { stepSimulation } from "@/lib/engine";
-import { vec, type Alert, type SimulationSettings, type SimulationState, type Uav, type World, type RestrictedZone, add, sub, length, normalize, mul } from "@/lib/types";
+import { vec, type Alert, type SimulationSettings, type SimulationState, type Uav, type World, type RestrictedZone, add, sub, length, normalize, mul, type Vector3 } from "@/lib/types";
 
 function randomBetween(min: number, max: number) { return Math.random() * (max - min) + min; }
 
@@ -10,10 +10,21 @@ function generateInitialUavs(count: number, world: World, maxSpeed: number): Uav
   const out: Uav[] = [];
   for (let i = 0; i < count; i++) {
     const id = `UAV-${i + 1}`;
+    const key = nanoid(); // Generate a unique key for React
     const position = { x: randomBetween(-half * 0.8, half * 0.8), y: randomBetween(-half * 0.8, half * 0.8), z: randomBetween(30, Math.min(120, world.heightMeters)) };
     const direction = vec(randomBetween(-1, 1), randomBetween(-1, 1), randomBetween(-0.1, 0.1));
     const velocity = { x: direction.x * maxSpeed * 0.7, y: direction.y * maxSpeed * 0.7, z: direction.z * maxSpeed * 0.2 };
-    out.push({ id, position, velocity, radius: 5, maxSpeed, color: `hsl(${Math.floor((i / count) * 360)}, 70%, 55%)` });
+    out.push({ 
+      id, 
+      key, // Use the unique key for React
+      position, 
+      velocity, 
+      radius: 10, 
+      maxSpeed, 
+      color: `hsl(${Math.floor((i / count) * 360)}, 70%, 55%)`,
+      battery: 100,
+      direction: { x: direction.x, y: direction.y, z: direction.z } // Normalized direction vector
+    });
   }
   return out;
 }
@@ -24,23 +35,12 @@ function defaultWorld(): World {
     sizeMeters,
     heightMeters: 300,
     gridStepMeters: 100,
-    restrictedZones: [
-      // {
-      //   id: "Z1",
-      //   name: "No-Fly Central",
-      //   polygon: [vec(-200, -200, 0), vec(200, -200, 0), vec(200, 200, 0), vec(-200, 200, 0)],
-      // },
-      // {
-      //   id: "Z2",
-      //   name: "Runway",
-      //   polygon: [vec(-600, 300, 0), vec(600, 300, 0), vec(600, 450, 0), vec(-600, 450, 0)],
-      // },
-    ],
+    restrictedZones: [],
   };
 }
 
 const defaultSettings: SimulationSettings = {
-  numUavs: 18,
+  numUavs: 5,
   timeStepMs: 50,
   lookaheadSeconds: 8,
   collisionThresholdMeters: 15,
@@ -63,6 +63,8 @@ type SimActions = {
   setSelectedUav: (id: string | null) => void;
   holdUav: (id: string) => void;
   returnUav: (id: string, target?: { x: number; y: number; z: number }) => void;
+  setUavBattery: (id: string, battery: number) => void;
+  setUavDirection: (id: string, direction: Vector3) => void;
 };
 
 export const useSimStore = create<SimulationState & SimActions>((set, get) => ({
@@ -115,6 +117,7 @@ export const useSimStore = create<SimulationState & SimActions>((set, get) => ({
       } else if (desired < state.uavs.length) {
         nextUavs = state.uavs.slice(0, desired);
       }
+      return { settings: nextSettings, uavs: nextUavs, alerts: [], lastTickAt: undefined };
     }
     if (key === "maxUavSpeed") {
       const max = value as number;
@@ -123,6 +126,7 @@ export const useSimStore = create<SimulationState & SimActions>((set, get) => ({
         y: Math.max(Math.min(u.velocity.y, max), -max),
         z: Math.max(Math.min(u.velocity.z, max), -max),
       }}));
+      return { settings: nextSettings, uavs: nextUavs, alerts: [], lastTickAt: undefined };
     }
     return { settings: nextSettings, uavs: nextUavs };
   }),
@@ -138,6 +142,12 @@ export const useSimStore = create<SimulationState & SimActions>((set, get) => ({
       const dir = normalize(sub(target, u.position));
       return { ...u, velocity: mul(dir, u.maxSpeed * 0.8) };
     }),
+  })),
+  setUavBattery: (id, battery) => set((state) => ({
+    uavs: state.uavs.map((u) => (u.id === id ? { ...u, battery } : u)),
+  })),
+  setUavDirection: (id, direction) => set((state) => ({
+    uavs: state.uavs.map((u) => (u.id === id ? { ...u, direction: normalize(direction), velocity: mul(normalize(direction), u.maxSpeed) } : u)),
   })),
 }));
 

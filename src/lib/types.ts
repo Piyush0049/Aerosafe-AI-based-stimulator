@@ -6,11 +6,14 @@ export type Vector3 = {
 
 export type Uav = {
   id: string;
+  key: string; // Unique key for React rendering
   position: Vector3; // meters
   velocity: Vector3; // meters/second
   maxSpeed: number; // m/s
   radius: number; // collision radius in meters
   color: string;
+  battery: number; // 0-100
+  direction: Vector3; // Normalized direction vector
 };
 
 export type Polygon = Vector3[]; // z ignored for 2D geofencing

@@ -41,7 +41,7 @@ export function Scene3D() {
   useEffect(() => { start(); }, [start]);
 
   return (
-    <div className="w-full h-full rounded-xl overflow-hidden border border-black/10 dark:border-white/10 bg-white/40 dark:bg-black/20 backdrop-blur relative">
+    <div className="w-full h-full rounded-t-xl overflow-hidden border border-black/10 dark:border-white/10 bg-white/40 dark:bg-black/20 backdrop-blur relative">
       <SceneLegend />
       <Canvas camera={{ position: [320, 260, 320], fov: 60, near: 0.1, far: 5000 }} dpr={[1, 2]} shadows gl={{ antialias: true, powerPreference: "high-performance", logarithmicDepthBuffer: true }}>
         <color attach="background" args={["#0b1020"]} />
@@ -49,7 +49,7 @@ export function Scene3D() {
         <hemisphereLight args={[0xffffff, 0x444444, 0.55]} />
         <directionalLight position={[300, 400, 200]} intensity={1.1} castShadow shadow-mapSize-width={2048} shadow-mapSize-height={2048} />
         <Suspense fallback={<Html center style={{ color: "white" }}>Loading…</Html>}>
-          <Environment preset="sunset" />
+          <Environment preset="night" />
           <Sky sunPosition={[100, 20, 100]} inclination={0.49} azimuth={0.25} mieCoefficient={0.005} turbidity={6} rayleigh={3} />
           <StableGrid size={world.sizeMeters} divisions={Math.round(world.sizeMeters / (world.gridStepMeters || 100))} />
           {world.restrictedZones.map((z) => (

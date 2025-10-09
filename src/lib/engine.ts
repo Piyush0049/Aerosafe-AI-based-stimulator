@@ -49,10 +49,21 @@ export function stepSimulation(uavs: Uav[], dtSec: number, settings: SimulationS
 
   // Integrate motion with steering and clamp speeds
   const nextUavs: Uav[] = uavs.map((u) => {
-    const desired = add(u.velocity, avoidance[u.id] ?? vec());
-    const clamped = clampLength(desired, u.maxSpeed);
-    const nextPos = add(u.position, mul(clamped, dtSec));
-    return { ...u, velocity: clamped, position: nextPos };
+    // Battery drain
+    const newBattery = Math.max(0, u.battery - dtSec * 0.5); // Drain 0.5% per second
+    let newVelocity = u.velocity;
+    let newDirection = u.direction;
+
+    if (newBattery <= 0) {
+      newVelocity = vec(0, 0, 0); // Stop UAV if battery is 0
+    } else {
+      const desired = add(u.velocity, avoidance[u.id] ?? vec());
+      newVelocity = clampLength(desired, u.maxSpeed);
+      newDirection = normalize(newVelocity); // Update direction based on new velocity
+    }
+
+    const nextPos = add(u.position, mul(newVelocity, dtSec));
+    return { ...u, velocity: newVelocity, position: nextPos, battery: newBattery, direction: newDirection };
   });
 
   // Detect geofence violations
