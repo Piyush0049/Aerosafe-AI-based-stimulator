@@ -105,31 +105,43 @@ export const useSimStore = create<SimulationState & SimActions>((set, get) => ({
     if (alerts.length) get().pushAlerts(alerts);
   },
   pushAlerts: (alerts: Alert[]) => set((state) => ({ alerts: [...alerts, ...state.alerts].slice(0, 100) })),
-  setSetting: (key, value) => set((state) => {
+  setSetting: (key, value) =>
+  set((state) => {
     const nextSettings = { ...state.settings, [key]: value } as SimulationSettings;
-    // Live-apply certain settings
     let nextUavs = state.uavs;
+
     if (key === "numUavs") {
       const desired = value as number;
-      if (desired > state.uavs.length) {
-        const additional = generateInitialUavs(desired - state.uavs.length, state.world, state.settings.maxUavSpeed);
-        nextUavs = [...state.uavs, ...additional];
-      } else if (desired < state.uavs.length) {
-        nextUavs = state.uavs.slice(0, desired);
-      }
-      return { settings: nextSettings, uavs: nextUavs, alerts: [], lastTickAt: undefined };
+
+      // Step 1: Clear all UAVs
+      nextUavs = [];
+
+      // Step 2: Generate new UAVs after a short delay (to allow UI re-render)
+      setTimeout(() => {
+        const freshUavs = generateInitialUavs(desired, state.world, state.settings.maxUavSpeed);
+        set({ uavs: freshUavs, alerts: [], lastTickAt: undefined });
+      }, 0);
+
+      return { settings: nextSettings, uavs: [], alerts: [], lastTickAt: undefined };
     }
+
     if (key === "maxUavSpeed") {
       const max = value as number;
-      nextUavs = state.uavs.map((u) => ({ ...u, maxSpeed: max, velocity: {
-        x: Math.max(Math.min(u.velocity.x, max), -max),
-        y: Math.max(Math.min(u.velocity.y, max), -max),
-        z: Math.max(Math.min(u.velocity.z, max), -max),
-      }}));
+      nextUavs = state.uavs.map((u) => ({
+        ...u,
+        maxSpeed: max,
+        velocity: {
+          x: Math.max(Math.min(u.velocity.x, max), -max),
+          y: Math.max(Math.min(u.velocity.y, max), -max),
+          z: Math.max(Math.min(u.velocity.z, max), -max),
+        },
+      }));
       return { settings: nextSettings, uavs: nextUavs, alerts: [], lastTickAt: undefined };
     }
+
     return { settings: nextSettings, uavs: nextUavs };
   }),
+
   addZone: (zone) => set((state) => ({ world: { ...state.world, restrictedZones: [...state.world.restrictedZones, { id: zone.id || `Z${state.world.restrictedZones.length + 1}`, name: zone.name, polygon: zone.polygon }] } })),
   removeZone: (id) => set((state) => ({ world: { ...state.world, restrictedZones: state.world.restrictedZones.filter((z) => z.id !== id) } })),
   setGridStep: (meters) => set((state) => ({ world: { ...state.world, gridStepMeters: meters } })),
