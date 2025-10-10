@@ -27,9 +27,9 @@ export function Header() {
             <Link href="/worlds" className="hover:text-black dark:hover:text-white flex items-center gap-1">
               <Globe size={16}/>Worlds
             </Link>
-            <Link href="/sim-babylon" className="hover:text-black dark:hover:text-white flex items-center gap-1">
+            {/* <Link href="/sim-babylon" className="hover:text-black dark:hover:text-white flex items-center gap-1">
               <Globe2Icon size={16}/>3D Alt
-            </Link>
+            </Link> */}
           </nav>
         </div>
         <div className="flex items-center gap-3">
