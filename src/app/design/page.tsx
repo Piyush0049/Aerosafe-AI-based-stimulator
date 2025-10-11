@@ -4,8 +4,19 @@ import { useState, useEffect } from "react";
 import { useSimStore } from "@/store/useSimStore";
 import { SaveWorldModal } from "@/components/SaveWorldModal";
 import { DesignCanvas2D } from "@/components/DesignCanvas2D";
+import { RestrictedZone } from "@/lib/types";
 
 type P = { x: number; y: number; z: number };
+
+interface WorldDesignItem {
+  _id: string;
+  name: string;
+  userId: string;
+  world: { sizeMeters: number; heightMeters: number; gridStepMeters?: number; restrictedZones: RestrictedZone[] }; 
+  createdAt: string;
+  updatedAt: string;
+}; 
+
 
 export default function DesignPage() {
   const { world, addZone, removeZone, setGridStep, applyWorld } = useSimStore();
@@ -13,7 +24,7 @@ export default function DesignPage() {
   const [points, setPoints] = useState<P[]>([]);
   const [grid, setGrid] = useState(world.gridStepMeters || 100);
   const [modal, setModal] = useState(false);
-  const [list, setList] = useState<any[]>([]);
+  const [list, setList] = useState<WorldDesignItem[]>([]);
 
   const refresh = async () => {
     const res = await fetch("/api/worlds");
@@ -43,7 +54,6 @@ export default function DesignPage() {
       <h1 className="text-2xl font-semibold">Design Airspace</h1>
 
       <div className="grid gap-6 md:grid-cols-2">
-        {/* Left Panel — Zone Editor */}
         <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur p-4">
           <h2 className="text-lg font-semibold mb-3">Restricted Zone Editor</h2>
           <DesignCanvas2D />

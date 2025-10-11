@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { nanoid } from "nanoid/non-secure";
 import { stepSimulation } from "@/lib/engine";
-import { vec, type Alert, type SimulationSettings, type SimulationState, type Uav, type World, type RestrictedZone, add, sub, length, normalize, mul, type Vector3 } from "@/lib/types";
+import { vec, type Alert, type SimulationSettings, type SimulationState, type Uav, type World, type RestrictedZone, sub, normalize, mul, type Vector3 } from "@/lib/types";
 
 function randomBetween(min: number, max: number) { return Math.random() * (max - min) + min; }
 
@@ -74,7 +74,7 @@ export const useSimStore = create<SimulationState & SimActions>((set, get) => ({
   running: false,
   settings: defaultSettings,
   lastTickAt: undefined,
-  selectedUavId: undefined as any,
+  selectedUavId: null,
 
   start: () => {
     const { running, uavs, settings, world } = get();
@@ -145,8 +145,8 @@ export const useSimStore = create<SimulationState & SimActions>((set, get) => ({
   addZone: (zone) => set((state) => ({ world: { ...state.world, restrictedZones: [...state.world.restrictedZones, { id: zone.id || `Z${state.world.restrictedZones.length + 1}`, name: zone.name, polygon: zone.polygon }] } })),
   removeZone: (id) => set((state) => ({ world: { ...state.world, restrictedZones: state.world.restrictedZones.filter((z) => z.id !== id) } })),
   setGridStep: (meters) => set((state) => ({ world: { ...state.world, gridStepMeters: meters } })),
-  applyWorld: (world) => set((state) => ({ world })),
-  setSelectedUav: (id) => set({ selectedUavId: id as any }),
+  applyWorld: (world) => set(() => ({ world })),
+  setSelectedUav: (id) => set({ selectedUavId: id }),
   holdUav: (id) => set((state) => ({ uavs: state.uavs.map((u) => (u.id === id ? { ...u, velocity: vec(0, 0, 0) } : u)) })),
   returnUav: (id, target = { x: 0, y: 0, z: 60 }) => set((state) => ({
     uavs: state.uavs.map((u) => {

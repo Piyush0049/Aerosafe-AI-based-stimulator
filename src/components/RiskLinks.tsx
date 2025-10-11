@@ -4,11 +4,12 @@ import { useMemo } from "react";
 import { Line } from "@react-three/drei";
 import { useSimStore } from "@/store/useSimStore";
 import { predictClosestApproach } from "@/lib/engine";
+import { Uav } from "@/lib/types";
 
 export function RiskLinks() {
   const { uavs, settings } = useSimStore();
   const pairs = useMemo(() => {
-    const out: { a: any; b: any; risk: number }[] = [];
+    const out: { a: Uav; b: Uav; risk: number }[] = [];
     for (let i = 0; i < uavs.length; i++) for (let j = i + 1; j < uavs.length; j++) {
       const risk = predictClosestApproach(uavs[i], uavs[j]);
       const combined = uavs[i].radius + uavs[j].radius + settings.collisionThresholdMeters;

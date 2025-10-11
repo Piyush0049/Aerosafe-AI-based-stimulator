@@ -6,8 +6,17 @@ if (!MONGODB_URI) {
   throw new Error("Missing MONGODB_URI environment variable");
 }
 
-let cached = (global as any).mongoose as { conn: typeof mongoose | null; promise: Promise<typeof mongoose> | null };
-if (!cached) cached = (global as any).mongoose = { conn: null, promise: null };
+interface CachedMongoose {
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
+}
+
+declare global {
+  var mongooseCache: CachedMongoose;
+}
+
+let cached: CachedMongoose = global.mongooseCache;
+if (!cached) cached = global.mongooseCache = { conn: null, promise: null };
 
 export async function connectToDatabase() {
   if (cached.conn) return cached.conn;

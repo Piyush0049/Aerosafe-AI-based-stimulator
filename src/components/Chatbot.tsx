@@ -35,7 +35,8 @@ export function Chatbot() {
       const data = await res.json();
       setMessages((m) => [...m, { role: "assistant", text: data.reply || "" }]);
     } catch (err) {
-      setMessages((m) => [...m, { role: "assistant", text: "Oops! Something went wrong." }]);
+      const message = err instanceof Error ? err.message : "Oops! Something went wrong.";
+      setMessages((m) => [...m, { role: "assistant", text: message }]);
     }
     setLoading(false);
   };

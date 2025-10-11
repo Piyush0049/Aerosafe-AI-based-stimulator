@@ -1,4 +1,5 @@
-import mongoose, { Schema, models, model } from "mongoose";
+import { Schema, models, model } from "mongoose";
+import { World } from "@/lib/types";
 
 const WorldDesignSchema = new Schema(
   {
@@ -13,7 +14,7 @@ export type IWorldDesign = {
   _id: string;
   userId: string;
   name: string;
-  world: any;
+  world: World;
 };
 
 export const WorldDesign = models.WorldDesign || model("WorldDesign", WorldDesignSchema);

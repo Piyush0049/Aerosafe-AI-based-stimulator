@@ -3,10 +3,10 @@ import { MongoClient } from "mongodb";
 const uri = process.env.MONGODB_URI as string;
 if (!uri) throw new Error("Missing MONGODB_URI env var");
 
-const options: any = {};
+const options: import("mongodb").MongoClientOptions = {};
 
 let client: MongoClient;
-let clientPromise: Promise<MongoClient>;
+// let clientPromise: Promise<MongoClient>;
 
 declare global {
   // eslint-disable-next-line no-var
@@ -18,7 +18,7 @@ if (!global._mongoClientPromise) {
   global._mongoClientPromise = client.connect();
 }
 
-clientPromise = global._mongoClientPromise as Promise<MongoClient>;
+const clientPromise = global._mongoClientPromise as Promise<MongoClient>;
 
 export default clientPromise;
 

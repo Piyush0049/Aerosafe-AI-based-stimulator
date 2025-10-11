@@ -29,7 +29,7 @@ export function Minimap() {
       ctx.fillRect(0, 0, w, h); 
       ctx.globalAlpha = 1;
       
-      const half = world.sizeMeters / 2; 
+      // const half = world.sizeMeters / 2; 
       const s = Math.min(w, h) / (world.sizeMeters || 1);
       const to = (x: number, y: number) => ({ x: w / 2 + x * s, y: h / 2 - y * s });
 

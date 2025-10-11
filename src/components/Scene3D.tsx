@@ -1,6 +1,7 @@
 "use client";
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import { OrbitControls, GizmoHelper, GizmoViewport, Html, Environment, ContactShadows, Sky } from "@react-three/drei";
 import { EffectComposer, SMAA, Bloom, Vignette } from "@react-three/postprocessing";
 import { StableGrid } from "@/components/StableGrid";
@@ -23,7 +24,7 @@ function Ticker() {
 }
 
 function StabilizeControls() {
-  const controls = useThree((s) => s.controls) as any;
+  const controls = useThree((s) => s.controls) as OrbitControlsImpl;
   useEffect(() => {
     if (controls) {
       controls.enableDamping = true;

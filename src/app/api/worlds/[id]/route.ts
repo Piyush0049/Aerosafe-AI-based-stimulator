@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import { connectToDatabase } from "@/lib/db";
@@ -9,23 +9,30 @@ interface SessionUser {
   name?: string | null;
   email?: string | null;
   image?: string | null;
-  // Add other properties if they exist on the session.user object
 }
 
-export async function DELETE(_: Request, { params }: { params: { id: string } }) {
+export async function DELETE(
+  _req: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
   try {
+    const { id } = await context.params; // ✅ Await the promise here
+
     const session = await getServerSession(authOptions);
-    if (!session?.user || !(session.user as SessionUser).id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    await connectToDatabase();
-    await WorldDesign.deleteOne({ _id: params.id, userId: (session.user as SessionUser).id });
-    return NextResponse.json({ ok: true });
-  } catch (err: unknown) {
-    let errorMessage = "Failed to delete";
-    if (err instanceof Error) {
-      errorMessage = err.message;
+    if (!session?.user || !(session.user as SessionUser).id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-    return NextResponse.json({ error: errorMessage }, { status: 500 });
+
+    await connectToDatabase();
+    await WorldDesign.deleteOne({
+      _id: id,
+      userId: (session.user as SessionUser).id,
+    });
+
+    return NextResponse.json({ ok: true });
+  } catch (err) {
+    const message =
+      err instanceof Error ? err.message : "Failed to delete world";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
-
-

@@ -23,7 +23,8 @@ export function AiPanel() {
       const data = await res.json();
       setAdvice(data.advice || "No advice received from ATC system.");
     } catch (error) {
-      setAdvice("Error: Unable to connect to ATC analysis system.");
+      console.log(error);
+      setAdvice("Error: Unable to connect to ATC analysis system."); // The 'error' variable itself is not used, only its effect on setting advice.
     } finally {
       setLoading(false);
     }
@@ -62,7 +63,7 @@ export function AiPanel() {
       ) : (
         <div className="text-xs text-gray-500 dark:text-gray-400 text-center py-6 rounded-lg">
           <Info className="w-4 h-4 mx-auto mb-2 opacity-50" />
-          Click "Analyze Airspace" to receive AI-powered traffic control recommendations
+          Click &quot;Analyze Airspace&quot; to receive AI-powered traffic control recommendations
         </div>
       )}
     </div>

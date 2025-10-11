@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useSession, signIn, signOut } from "next-auth/react";
-import { Plane, LogIn, LogOut, Shield, Home, Edit, Globe, Globe2Icon } from "lucide-react";
+import { useSession, signOut } from "next-auth/react";
+import { Plane, LogIn, LogOut, Shield, Edit, Globe } from "lucide-react";
 
 export function Header() {
   const { data: session } = useSession();

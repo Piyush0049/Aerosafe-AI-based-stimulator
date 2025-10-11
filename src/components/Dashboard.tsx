@@ -25,12 +25,12 @@ const vectorToHeadingPitch = (vector: Vector3) => {
     normalizedZ /= magnitude;
   }
 
-  let headingRad = Math.atan2(normalizedX, normalizedZ);
+  const headingRad = Math.atan2(normalizedX, normalizedZ);
   let headingDeg = toDegrees(headingRad);
   headingDeg = (headingDeg + 360) % 360; // Ensure 0-360
 
-  let pitchRad = Math.atan2(-normalizedY, Math.sqrt(normalizedX * normalizedX + normalizedZ * normalizedZ));
-  let pitchDeg = toDegrees(pitchRad);
+  const pitchRad = Math.atan2(-normalizedY, Math.sqrt(normalizedX * normalizedX + normalizedZ * normalizedZ));
+  const pitchDeg = toDegrees(pitchRad);
 
   return { heading: headingDeg, pitch: pitchDeg };
 };

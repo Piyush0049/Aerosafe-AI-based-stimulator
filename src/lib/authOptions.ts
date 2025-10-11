@@ -1,4 +1,6 @@
-import type { NextAuthOptions } from "next-auth";
+import type { NextAuthOptions, Session, User as NextAuthUser } from "next-auth";
+import type { JWT } from "next-auth/jwt";
+import type { AdapterUser } from "next-auth/adapters";
 import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
@@ -29,17 +31,22 @@ export const authOptions: NextAuthOptions = {
         if (!user || !user.passwordHash) return null;
         const ok = await bcrypt.compare(credentials.password, user.passwordHash);
         if (!ok) return null;
-        return { id: String(user._id), email: user.email, name: user.name || undefined, image: user.image || undefined } as any;
+        return { id: String(user._id), email: user.email, name: user.name || undefined, image: user.image || undefined };
       },
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
-      if (user?.id) (token as any).uid = (user as any).id;
+    async jwt({ token, user }: { token: JWT; user: NextAuthUser | AdapterUser }) {
+      if (user?.id) token.uid = user.id;
       return token;
     },
-    async session({ session, token }) {
-      if (session.user && (token as any)?.uid) (session.user as any).id = (token as any).uid;
+    async session({ session, token }: { session: Session; token: JWT }) {
+      if (token?.uid) {
+        session.user = {
+          ...session.user,
+          id: token.uid as string,
+        };
+      }
       return session;
     },
   },

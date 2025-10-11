@@ -1,6 +1,6 @@
 "use client";
 
-import { Canvas } from "@react-three/fiber";
+import { Canvas, ThreeEvent } from "@react-three/fiber";
 import { OrbitControls, Html } from "@react-three/drei";
 import { useState } from "react";
 import { useSimStore } from "@/store/useSimStore";
@@ -10,7 +10,7 @@ export default function Design3DPage() {
   const [points, setPoints] = useState<[number, number, number][]>([]);
   const [name, setName] = useState("Zone3D");
 
-  const onGroundClick = (e: any) => {
+  const onGroundClick = (e: ThreeEvent<MouseEvent>) => {
     const p = e.point as { x: number; y: number; z: number };
     setPoints((ps) => [...ps, [p.x, 0, p.z]]);
   };
