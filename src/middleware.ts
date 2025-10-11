@@ -10,9 +10,7 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = await getToken({ req: request });
 
-  // If user is NOT logged in
   if (!token) {
-    // If trying to access auth paths or public home, allow
     if (AUTH_PATHS.includes(pathname) || pathname === PUBLIC_HOME_PATH) {
       return NextResponse.next();
     }
