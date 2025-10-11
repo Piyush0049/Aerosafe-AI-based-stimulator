@@ -17,8 +17,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AeroSafe Simulator",
+  title: "AeroSafe - Airspace violation detection, collision prediction, and AI alerts",
   description: "Airspace violation detection, collision prediction, and AI alerts",
+  icons: { icon: "/favicon.ico" },
 };
 
 export default function RootLayout({
