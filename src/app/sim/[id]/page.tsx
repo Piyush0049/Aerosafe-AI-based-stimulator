@@ -14,9 +14,9 @@ interface SessionUser {
 export default async function SimByIdPage({
   params,
 }: {
-  params: Promise<{ id: string }>; // ✅ Fix: make params a Promise
+  params: Promise<{ id: string }>; 
 }) {
-  const { id } = await params; // ✅ Await the promise
+  const { id } = await params;
 
   const session = await getServerSession(authOptions);
   const user = session?.user as SessionUser | undefined;
