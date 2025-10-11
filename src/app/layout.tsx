@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Poppins, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { SessionProvider } from "@/components/providers/SessionProvider";
-import { Header } from "@/components/Header";
-import { Chatbot } from "@/components/Chatbot";
+import { SessionProvider } from "@/components/providers/SessionProvider"; // Keep this import
+import { LayoutContent } from "@/components/LayoutContent"; // Import the new LayoutContent component
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -30,11 +29,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.variable} ${geistMono.variable} antialiased `}>
-        <SessionProvider>
-          <Header />
-          {children}
-          <Chatbot />
-        </SessionProvider>
+        <SessionProvider> {/* Add SessionProvider here */}
+          <LayoutContent>{children}</LayoutContent>
+        </SessionProvider> {/* Close SessionProvider here */}
       </body>
     </html>
   );

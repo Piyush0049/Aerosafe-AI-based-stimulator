@@ -21,12 +21,17 @@ export default function Design3DPage() {
     setPoints([]);
   };
 
+  const undo = () => {
+    setPoints((ps) => ps.slice(0, ps.length - 1));
+  };
+
   return (
     <div className="min-h-screen p-6 sm:p-8">
       <div className="mb-3 flex items-center gap-2">
         <span className="text-sm">Name</span>
         <input value={name} onChange={(e)=>setName(e.target.value)} className="px-2 py-1 rounded-md border border-white/10 bg-white/10"/>
         <button onClick={save} className="px-3 py-1.5 rounded-md bg-emerald-600 text-white text-sm">Save zone</button>
+        <button onClick={undo} className="px-3 py-1.5 rounded-md bg-gray-600 text-white text-sm" disabled={points.length === 0}>Undo</button>
       </div>
       <div className="h-[70vh] rounded-xl overflow-hidden border border-white/10">
         <Canvas camera={{ position: [200, 180, 200], fov: 60 }} dpr={[1,2]}>

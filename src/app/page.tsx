@@ -1,15 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { 
-  Plane, 
-  Shield, 
-  LogIn, 
-  Eye, 
-  Zap, 
-  Globe, 
-  Users, 
-  CheckCircle, 
+import {
+  Plane,
+  Shield,
+  LogIn,
+  Eye,
+  Zap,
+  Globe,
+  Users,
+  CheckCircle,
   ArrowRight,
   Star,
   Play,
@@ -18,8 +18,11 @@ import {
   MapPin,
   AlertTriangle
 } from "lucide-react";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
+  const { data: session } = useSession();
+  const isAuthed = Boolean(session?.user);
   return (
     <div className="min-h-screen text-white bg-gray-950 font-[Poppins]">
       {/* Hero Section */}
@@ -33,23 +36,23 @@ export default function Home() {
               Simulate. Detect. Prevent.
             </h1>
             <p className="mt-4 text-white/70 max-w-prose">
-              AeroSafe predicts collisions, enforces geofences, and issues AI-grade alerts for UAV operations. 
+              AeroSafe predicts collisions, enforces geofences, and issues AI-grade alerts for UAV operations.
               Explore a beautiful 3D dashboard designed for clarity and control.
             </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Link 
-                href="/auth/signup" 
+            {!isAuthed && (<div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                href="/auth/signup"
                 className="px-4 py-2.5 rounded-md bg-emerald-600 text-white hover:bg-emerald-700 flex items-center gap-2 transition-colors"
               >
                 <Shield size={18} /> Get started
               </Link>
-              <Link 
-                href="/auth/login" 
+              <Link
+                href="/auth/login"
                 className="px-4 py-2.5 rounded-md bg-white/10 text-white hover:bg-white/20 border border-white/10 flex items-center gap-2 transition-colors"
               >
                 <LogIn size={18} /> Login
               </Link>
-            </div>
+            </div>)}
           </div>
 
           {/* Fixed SVG background pattern */}

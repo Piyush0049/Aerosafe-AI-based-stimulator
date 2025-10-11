@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { useSimStore } from "@/store/useSimStore";
 import { SaveWorldModal } from "@/components/SaveWorldModal";
 import { DesignCanvas2D } from "@/components/DesignCanvas2D";
-import { DesignCanvas3D } from "@/components/DesignCanvas3D";
 
 type P = { x: number; y: number; z: number };
 
@@ -103,6 +102,13 @@ export default function DesignPage() {
               className="px-3 py-1.5 rounded-md bg-white/10 text-white text-sm"
             >
               Clear
+            </button>
+            <button
+              onClick={() => setPoints((ps) => ps.slice(0, ps.length - 1))} // Add this line for undo functionality
+              className="px-3 py-1.5 rounded-md bg-gray-600 text-white text-sm"
+              disabled={points.length === 0}
+            >
+              Undo
             </button>
             <button
               onClick={save}
