@@ -1,28 +1,36 @@
 // middleware.ts
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { getToken } from "next-auth/jwt";
 
-const PUBLIC_PATHS = ["/", "/auth/login", "/auth/signup"];
+const AUTH_PATHS = ["/auth/login", "/auth/signup"];
+const PUBLIC_HOME_PATH = "/";
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const token = await getToken({ req: request });
 
-  // Allow public paths without authentication
-  if (PUBLIC_PATHS.includes(pathname)) {
-    return NextResponse.next();
-  }
-
-  // Read your auth token cookie name here (adjust accordingly)
-  const token = request.cookies.get("token")?.value;
-
-  // If token missing, redirect to login
+  // If user is NOT logged in
   if (!token) {
+    // If trying to access auth paths or public home, allow
+    if (AUTH_PATHS.includes(pathname) || pathname === PUBLIC_HOME_PATH) {
+      return NextResponse.next();
+    }
+    // Otherwise, redirect to login
     const loginUrl = new URL("/auth/login", request.url);
     return NextResponse.redirect(loginUrl);
   }
 
-  // Otherwise continue request
-  return NextResponse.next();
+  // If user IS logged in
+  if (token) {
+    // If trying to access auth paths, redirect to home (or dashboard)
+    if (AUTH_PATHS.includes(pathname)) {
+      const homeUrl = new URL("/", request.url);
+      return NextResponse.redirect(homeUrl);
+    }
+    // Otherwise, allow access
+    return NextResponse.next();
+  }
 }
 
 // Apply this middleware to all pages except api/_next (static files)
