@@ -41,7 +41,7 @@ export function Chatbot() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-[75px] sm:bottom-6 right-6 z-50">
       {!open ? (
         <button
           onClick={() => setOpen(true)}
@@ -50,7 +50,7 @@ export function Chatbot() {
           <MessageCircle size={24} />
         </button>
       ) : (
-        <div className="w-[340px] h-[480px] rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-black/10 dark:border-white/10 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md">
+        <div className="w-[320px] h-[360px] sm:w-[340px] sm:h-[480px] rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-black/10 dark:border-white/10 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md">
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-emerald-500 to-emerald-700 text-white font-medium text-sm">
             <span>AeroSafe Assistant</span>

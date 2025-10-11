@@ -1,9 +1,23 @@
 import { NextResponse } from "next/server";
 import { getGeminiModel } from "@/lib/ai";
 
+interface UAV {
+  id: string;
+  position: { x: number; y: number; z: number };
+  velocity: { x: number; y: number; z: number };
+  // Add other relevant UAV properties here
+}
+
+interface Zone {
+  id: string;
+  vertices: { x: number; y: number }[];
+  height: number;
+  // Add other relevant Zone properties here
+}
+
 export async function POST(req: Request) {
   const body = await req.json().catch(() => ({}));
-  const { uavs, zones } = body as { uavs: any[]; zones: any[] };
+  const { uavs, zones } = body as { uavs: UAV[]; zones: Zone[] };
   const model = getGeminiModel();
   const prompt = `You are an AI ATC assistant. Given UAV states and restricted zones, provide:
   - Immediate safety advisories (collisions/geofencing)

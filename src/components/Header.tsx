@@ -39,13 +39,17 @@ export function Header() {
         <div className="flex items-center gap-3">
           {isAuthed ? (
             <>
-              <div className="text-sm hidden sm:block">{session?.user?.email}</div>
-              <button onClick={() => signOut()} className="px-3 py-1.5 rounded-md bg-slate-800 text-white text-sm hover:bg-slate-900 flex items-center gap-1">
+              <div className="hidden sm:flex items-center justify-center w-8 h-8 rounded-full bg-green-800 text-white font-semibold text-sm">
+  {session?.user?.email?.[0]?.toUpperCase() || ""}
+</div>
+
+
+              <button onClick={() => signOut()} className="sm:flex px-3 py-1.5 rounded-md bg-slate-800 text-white text-sm hover:bg-slate-900 hidden items-center gap-1">
                 <LogOut size={16} />Logout
               </button>
             </>
           ) : (
-            <div className="flex items-center gap-2">
+            <div className="hidden sm:flex items-center gap-2">
               <Link href="/auth/login" className="px-3 py-1.5 rounded-md bg-slate-800 text-white text-sm hover:bg-slate-900 flex items-center gap-1">
                 <LogIn size={16} />Login
               </Link>

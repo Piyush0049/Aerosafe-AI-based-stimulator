@@ -120,12 +120,28 @@ export function Dashboard() {
   const selectedUav = uavs.find((u) => u.id === selectedUavId);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 w-full">
-      <div className="lg:col-span-3 h-[70vh]">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 w-full ">
+      <div className="md:col-span-1 lg:col-span-3 flex flex-col h-[70vh] md:h-full">
         <Scene3D />
         <AiPanel />
       </div>
-      <div className="lg:col-span-2 space-y-6">
+      <div className="md:col-span-1 lg:col-span-2 flex flex-col space-y-6">
+                <div className="rounded-xl border border-black/10 dark:border-white/10 bg-white/60 dark:bg-white/5 p-4 backdrop-blur h-[30vh] overflow-hidden">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-lg font-semibold">AI Alerts</h2>
+            <span className="text-xs text-black/60 dark:text-white/60">UAVs: {uavs.length}</span>
+          </div>
+          <div className="h-[calc(28vh-3rem)] overflow-y-auto pr-2 space-y-2">
+            <AnimatePresence initial={false}>
+              {alerts.map((a, idx) => (
+                <motion.div key={idx} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.2 }} className="text-sm rounded-md border border-black/10 dark:border-white/10 bg-white/80 dark:bg-white/10 p-2">
+                  <div className="text-xs uppercase tracking-wide font-medium text-black/60 dark:text-white/60">{a.type.replace("_", " ")}</div>
+                  <div>{"message" in a ? a.message : ""}</div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+        </div>
         <div className="rounded-xl border border-black/10 dark:border-white/10 bg-white/60 dark:bg-white/5 p-4 backdrop-blur">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-lg font-semibold">Simulation Controls</h2>
@@ -189,22 +205,7 @@ export function Dashboard() {
             </div>
           </div>
         )}
-        <div className="rounded-xl border border-black/10 dark:border-white/10 bg-white/60 dark:bg-white/5 p-4 backdrop-blur h-[30vh] overflow-hidden">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-lg font-semibold">AI Alerts</h2>
-            <span className="text-xs text-black/60 dark:text-white/60">UAVs: {uavs.length}</span>
-          </div>
-          <div className="h-[calc(28vh-3rem)] overflow-y-auto pr-2 space-y-2">
-            <AnimatePresence initial={false}>
-              {alerts.map((a, idx) => (
-                <motion.div key={idx} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.2 }} className="text-sm rounded-md border border-black/10 dark:border-white/10 bg-white/80 dark:bg-white/10 p-2">
-                  <div className="text-xs uppercase tracking-wide font-medium text-black/60 dark:text-white/60">{a.type.replace("_", " ")}</div>
-                  <div>{"message" in a ? a.message : ""}</div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
-        </div>
+
       </div>
     </div>
   );
