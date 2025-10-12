@@ -9,7 +9,7 @@ export function ApplyWorldClient({ world }: { world: World }) {
   const applyWorld = useSimStore((s) => s.applyWorld);
   useEffect(() => { if (world) applyWorld(world); }, [world, applyWorld]);
   return (
-    <div className="min-h-screen p-3 sm:p-8 max-w-6xl mx-auto">
+    <div className="min-h-screen pb-20 pt-4 px-4 sm:p-8 max-w-6xl mx-auto">
       <Dashboard />
     </div>
   );

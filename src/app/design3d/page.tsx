@@ -26,7 +26,7 @@ export default function Design3DPage() {
   };
 
   return (
-    <div className="min-h-screen p-4 sm:p-8">
+    <div className="min-h-screen pb-8 pt-4 px-4 sm:p-8">
       <div className="flex flex-col sm:flex-row sm:items-center items-start sm:gap-2">
         <div className="mb-3 flex items-center gap-2">
           <span className="text-sm">Name</span>

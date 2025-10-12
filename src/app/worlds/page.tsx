@@ -22,7 +22,7 @@ export default async function WorldsPage() {
     .sort({ updatedAt: -1 })
     .lean<IWorldDesign[]>()) as IWorldDesign[];
   return (
-    <div className="min-h-screen p-6 sm:p-8 max-w-6xl mx-auto">
+    <div className="min-h-screen pb-8 pt-4 px-4 sm:p-8 max-w-6xl mx-auto">
       <h1 className="text-2xl font-semibold mb-4">My Worlds</h1>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {docs.map((w: IWorldDesign) => (

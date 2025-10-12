@@ -121,12 +121,12 @@ export function Dashboard() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 w-full ">
-      <div className="md:col-span-1 lg:col-span-3 flex flex-col h-[70vh] md:h-full">
+      <div className="md:col-span-1 lg:col-span-3 flex flex-col flex-1 md:h-full">
         <Scene3D />
         <AiPanel />
       </div>
       <div className="md:col-span-1 lg:col-span-2 flex flex-col space-y-6">
-                <div className="rounded-xl border border-black/10 dark:border-white/10 bg-white/60 dark:bg-white/5 p-4 backdrop-blur h-[30vh] overflow-hidden">
+        <div className="rounded-xl border border-black/10 dark:border-white/10 bg-white/60 dark:bg-white/5 p-4 backdrop-blur h-[30vh] overflow-hidden">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-lg font-semibold">AI Alerts</h2>
             <span className="text-xs text-black/60 dark:text-white/60">UAVs: {uavs.length}</span>
