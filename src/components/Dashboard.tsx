@@ -122,9 +122,9 @@ export function Dashboard() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 w-full ">
       <div className="flex flex-col flex-1 min-h-screen sm:min-h-0 md:col-span-1 lg:col-span-3">
-  <Scene3D />
-  <AiPanel />
-</div>
+        <Scene3D />
+        <AiPanel />
+      </div>
 
       <div className="md:col-span-1 lg:col-span-2 flex flex-col space-y-6">
         <div className="rounded-xl border border-black/10 dark:border-white/10 bg-white/60 dark:bg-white/5 p-4 backdrop-blur h-[30vh] overflow-hidden">
