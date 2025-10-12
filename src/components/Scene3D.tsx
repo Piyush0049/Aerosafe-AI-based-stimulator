@@ -53,16 +53,18 @@ export function Scene3D() {
           <Environment preset="night" />
           <Sky sunPosition={[100, 20, 100]} inclination={0.49} azimuth={0.25} mieCoefficient={0.005} turbidity={6} rayleigh={3} />
           <StableGrid size={world.sizeMeters} divisions={Math.round(world.sizeMeters / (world.gridStepMeters || 100))} />
-          {world.restrictedZones.map((z) => (
-            <ZoneMesh key={z.id} zone={z} />
-          ))}
-          <RiskLinks />
-          {uavs.map((u) => (
-            <group key={u.id}>
-              <UavMesh uav={u} />
-              <UavTrail uav={u} />
-            </group>
-          ))}
+          <group scale={[1, 1, -1]}>
+            {world.restrictedZones.map((z) => (
+              <ZoneMesh key={z.id} zone={z} />
+            ))}
+            <RiskLinks />
+            {uavs.map((u) => (
+              <group key={u.id}>
+                <UavMesh uav={u} />
+                <UavTrail uav={u} />
+              </group>
+            ))}
+          </group>
           <ContactShadows position={[0, 0.01, 0]} opacity={0.35} scale={world.sizeMeters * 0.8} blur={1.8} far={120} />
           <Ticker />
           <StabilizeControls />

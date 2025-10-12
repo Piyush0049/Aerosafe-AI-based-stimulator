@@ -20,7 +20,7 @@ export function ZoneMesh({ zone }: { zone: RestrictedZone }) {
 
   return (
     <group>
-      <mesh ref={ref} geometry={geom} receiveShadow rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.03, 0]}>
+      <mesh ref={ref} geometry={geom} receiveShadow rotation={[Math.PI / 2, 0, 0]} position={[0, 0.03, 0]}>
         <meshStandardMaterial color="#ff3860" transparent opacity={0.18} polygonOffset polygonOffsetFactor={-2} polygonOffsetUnits={-2} />
       </mesh>
       <Html position={[0, 0.5, 0]} center distanceFactor={20}>
