@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+// AeroSafe: Real-time Airspace Safety Simulation
+
+AeroSafe is an advanced UAV (Unmanned Aerial Vehicle) simulation and airspace management platform designed to enhance safety and operational efficiency. It leverages AI-powered algorithms to predict collisions, enforce geofences, and issue real-time alerts, all presented through an intuitive 3D dashboard.
+
+## Features
+
+-   **Real-time UAV Tracking:** Monitor UAV positions, velocities, and flight paths with high precision.
+-   **AI-powered Collision Prediction:** Advanced algorithms predict potential collisions, providing early warnings.
+-   **Geofence Enforcement:** Define and enforce restricted zones and no-fly areas with automatic violation detection.
+-   **AI-Grade Alerts:** Receive intelligent, contextual alerts with severity levels and automated response suggestions.
+-   **Interactive 3D Visualization:** Explore a dynamic 3D environment for comprehensive airspace management and situational awareness.
+-   **Simulation Controls:** Control and manage UAV simulations to test various scenarios.
+-   **Minimap:** A 2D minimap for quick navigation and overview of the airspace.
+
+## Technologies Used
+
+-   **Next.js:** React framework for building performant applications.
+-   **React Three Fiber:** React renderer for Three.js, enabling 3D graphics in React.
+-   **Tailwind CSS:** A utility-first CSS framework for rapid UI development.
+-   **NextAuth.js:** Authentication for Next.js applications.
+-   **Zustand:** A small, fast, and scalable bearbones state-management solution.
 
 ## Getting Started
 
-First, run the development server:
+Follow these instructions to set up and run the AeroSafe project locally.
+
+### Prerequisites
+
+Make sure you have the following installed:
+
+-   Node.js (v18 or later)
+-   npm or yarn
+
+### Installation
+
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/Piyush0049/Aerosafe-AI-based-stimulator.git
+    cd Aerosafe-AI-based-stimulator
+    ```
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    # or
+    yarn install
+    ```
+3.  **Set up environment variables:**
+    Create a `.env.local` file in the root directory and add your environment variables.
+    ```
+    # Example environment variables (adjust as needed)
+    NEXTAUTH_URL=http://localhost:3000
+    # Add any other necessary environment variables
+    ```
+
+### Running the Development Server
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1.  **Login/Signup:** If not authenticated, you will see a login/signup page. Create an account or log in to access the simulator.
+2.  **3D Simulator:** Once authenticated, you will be directed to the 3D simulation dashboard.
+3.  **Interact:** Use the controls to navigate the 3D world, observe UAVs, and monitor restricted zones and alerts.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
