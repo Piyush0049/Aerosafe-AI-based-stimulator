@@ -16,6 +16,7 @@ import {
   AlertTriangle
 } from "lucide-react";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -53,22 +54,26 @@ export default function Home() {
           </div>
 
           {/* Fixed SVG background pattern */}
-          <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur p-4">
-            <div
-              className="aspect-video w-full rounded-lg bg-gradient-to-br from-emerald-500/30 to-cyan-500/30 border border-white/10 flex items-center justify-center text-white/80 relative overflow-hidden"
-            >
+          <div className={`rounded-xl border border-white/10 bg-white/5 backdrop-blur ${isAuthed ? 'p-1' : 'p-4'}`}>
+            {isAuthed ? (
+              <Image src="/stimulation.png" alt="Simulation" width={1920} height={1080} className="w-full h-auto rounded-lg" priority unoptimized />
+            ) : (
               <div
-                className="absolute inset-0 opacity-50"
-                style={{
-                  backgroundImage:
-                    "url(\"data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='20' cy='20' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
-                }}
-              ></div>
-              <div className="relative z-10 text-center">
-                <Play size={24} className="mx-auto mb-2 opacity-80" />
-                <span className="text-sm">3D Simulator available after login →</span>
+                className="aspect-video w-full rounded-lg bg-gradient-to-br from-emerald-500/30 to-cyan-500/30 border border-white/10 flex items-center justify-center text-white/80 relative overflow-hidden"
+              >
+                <div
+                  className="absolute inset-0 opacity-50"
+                  style={{
+                    backgroundImage:
+                      "url(\"data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='20' cy='20' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
+                  }}
+                ></div>
+                <div className="relative z-10 text-center">
+                  <Play size={24} className="mx-auto mb-2 opacity-80" />
+                  <span className="text-sm">3D Simulator available after login →</span>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </section>
