@@ -50,7 +50,7 @@ export default function DesignPage() {
   const applyGrid = () => setGridStep(grid);
 
   return (
-    <div className="min-h-screen pt-6 pb-20 py-6 sm:p-8 max-w-5xl mx-auto space-y-6">
+    <div className="min-h-screen pt-6 pb-20 py-x sm:p-8 max-w-5xl mx-auto space-y-6">
       <h1 className="text-2xl font-semibold">Design Airspace</h1>
 
       <div className="grid gap-6 md:grid-cols-2">
