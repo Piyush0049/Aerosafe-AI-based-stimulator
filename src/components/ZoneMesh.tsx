@@ -38,9 +38,9 @@ export function ZoneMesh({ zone }: ZoneMeshProps) {
       receiveShadow
     >
       <meshStandardMaterial
-        color="#FF2900"
+        color="#C79A00"
         // transparent
-        opacity={0.7}
+        opacity={0.2}
         side={THREE.DoubleSide}
       />
     </mesh>

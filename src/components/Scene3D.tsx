@@ -104,9 +104,9 @@ export function Scene3D() {
           {/* Shadows */}
           <ContactShadows
             position={[0, 0.01, 0]}
-            opacity={0.35}
+            opacity={0.15}
             scale={world.sizeMeters}
-            blur={1.8}
+            blur={100}
             far={120}
           />
 

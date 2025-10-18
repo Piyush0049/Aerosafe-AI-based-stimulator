@@ -39,7 +39,7 @@ export function UavMesh({ uav }: { uav: Uav }) {
     <group>
       <mesh ref={ref} castShadow receiveShadow onClick={(e) => { e.stopPropagation(); setSelected(uav.id); }}>
         <sphereGeometry args={[uav.radius + 8, 20, 20]} />
-        <meshStandardMaterial color={displayColor} emissive={displayColor} emissiveIntensity={0.35} metalness={0.2} roughness={0.35} />
+        <meshStandardMaterial color={displayColor} emissive={displayColor} emissiveIntensity={0.2} metalness={0.9} roughness={0.1} />
         {/* Label */}
         <Html center distanceFactor={8} position={[0, uav.radius + 6, 0]}>
           <div style={{ fontFamily: 'Poppins, sans-serif' }} className="px-2 py-0.5 rounded-md text-xs bg-black/70 text-white border border-white/10 whitespace-nowrap">
