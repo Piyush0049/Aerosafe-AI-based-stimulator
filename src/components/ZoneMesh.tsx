@@ -16,8 +16,6 @@ export function ZoneMesh({ zone }: ZoneMeshProps) {
   const shape = useMemo(() => {
     const s = new THREE.Shape();
     zone.polygon.forEach((p, i) => {
-      // Match minimap transformation: y is negated in minimap, 
-      // so we negate here to align with ground plane coordinates
       if (i === 0) {
         s.moveTo(p.x, -p.y);
       } else {
@@ -41,8 +39,8 @@ export function ZoneMesh({ zone }: ZoneMeshProps) {
     >
       <meshStandardMaterial
         color="#FF2900"
-        transparent
-        opacity={0.4}
+        // transparent
+        opacity={0.7}
         side={THREE.DoubleSide}
       />
     </mesh>

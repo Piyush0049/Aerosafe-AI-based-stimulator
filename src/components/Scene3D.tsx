@@ -82,7 +82,7 @@ export function Scene3D() {
             {/* Green Ground - centered at origin */}
             <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
               <planeGeometry args={[world.sizeMeters, world.sizeMeters]} />
-              <meshStandardMaterial color="#2ecc71" />
+              <meshStandardMaterial color="#02B34A" />
             </mesh>
 
             {/* Restricted Zones in RED */}
