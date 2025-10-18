@@ -17,16 +17,19 @@ export function UavMesh({ uav }: { uav: Uav }) {
   const rtb = useSimStore((s) => s.returnUav);
 
   useFrame(() => {
-    ref.current.position.set(uav.position.x, uav.position.z, uav.position.y);
+    // Rotate 180° about data z-axis: (x, y, z) -> (-x, -y, z)
+    ref.current.position.set(uav.position.x, uav.position.z, -uav.position.y);
+
+    // Keep altitude (data z) unchanged; invert ground-plane x,y for vectors too
     velocityEnd.current = [
       uav.position.x + uav.velocity.x * 0.8,
       uav.position.z + uav.velocity.z * 0.8,
-      uav.position.y + uav.velocity.y * 0.8,
+      -uav.position.y - uav.velocity.y * 0.8,
     ];
     directionEnd.current = [
       uav.position.x + uav.direction.x * uav.radius * 2,
       uav.position.z + uav.direction.z * uav.radius * 2,
-      uav.position.y + uav.direction.y * uav.radius * 2,
+      -uav.position.y - uav.direction.y * uav.radius * 2,
     ];
   });
 
@@ -35,7 +38,7 @@ export function UavMesh({ uav }: { uav: Uav }) {
   return (
     <group>
       <mesh ref={ref} castShadow receiveShadow onClick={(e) => { e.stopPropagation(); setSelected(uav.id); }}>
-        <sphereGeometry args={[uav.radius, 20, 20]} />
+        <sphereGeometry args={[uav.radius + 8, 20, 20]} />
         <meshStandardMaterial color={displayColor} emissive={displayColor} emissiveIntensity={0.35} metalness={0.2} roughness={0.35} />
         {/* Label */}
         <Html center distanceFactor={8} position={[0, uav.radius + 6, 0]}>
@@ -44,11 +47,6 @@ export function UavMesh({ uav }: { uav: Uav }) {
           </div>
         </Html>
       </mesh>
-      {/* Velocity vector */}
-      <Line points={[[uav.position.x, uav.position.z, uav.position.y], velocityEnd.current]} color={displayColor} lineWidth={2} transparent opacity={0.8} />
-      {/* Direction indicator */}
-      <Line points={[[uav.position.x, uav.position.z, uav.position.y], directionEnd.current]} color="#00ff00" lineWidth={3} transparent opacity={0.8} />
-      {/* Quick command buttons near the UAV */}
       <Html center distanceFactor={10} position={[0, -uav.radius - 8, 0]}>
         <div className="flex gap-1">
           <button onClick={(e) => { e.stopPropagation(); hold(uav.id); }} className="px-1.5 py-0.5 text-[10px] rounded bg-white/10 border border-white/10">Hold</button>

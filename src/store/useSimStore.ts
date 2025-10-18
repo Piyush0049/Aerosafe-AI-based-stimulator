@@ -10,13 +10,13 @@ function generateInitialUavs(count: number, world: World, maxSpeed: number): Uav
   const out: Uav[] = [];
   for (let i = 0; i < count; i++) {
     const id = `UAV-${i + 1}`;
-    const key = nanoid(); // Generate a unique key for React
+    const key = nanoid();
     const position = { x: randomBetween(-half * 0.8, half * 0.8), y: randomBetween(-half * 0.8, half * 0.8), z: randomBetween(30, Math.min(120, world.heightMeters)) };
     const direction = vec(randomBetween(-1, 1), randomBetween(-1, 1), randomBetween(-0.1, 0.1));
     const velocity = { x: direction.x * maxSpeed * 0.7, y: direction.y * maxSpeed * 0.7, z: direction.z * maxSpeed * 0.2 };
     out.push({ 
       id, 
-      key, // Use the unique key for React
+      key,
       position, 
       velocity, 
       radius: 10, 
@@ -65,6 +65,8 @@ type SimActions = {
   returnUav: (id: string, target?: { x: number; y: number; z: number }) => void;
   setUavBattery: (id: string, battery: number) => void;
   setUavDirection: (id: string, direction: Vector3) => void;
+  setUavAltitude: (id: string, altitude: number) => void;
+  setWorldHeight: (height: number) => void;
 };
 
 export const useSimStore = create<SimulationState & SimActions>((set, get) => ({
@@ -160,6 +162,12 @@ export const useSimStore = create<SimulationState & SimActions>((set, get) => ({
   })),
   setUavDirection: (id, direction) => set((state) => ({
     uavs: state.uavs.map((u) => (u.id === id ? { ...u, direction: normalize(direction), velocity: mul(normalize(direction), u.maxSpeed) } : u)),
+  })),
+  setUavAltitude: (id, altitude) => set((state) => ({
+    uavs: state.uavs.map((u) => (u.id === id ? { ...u, position: { ...u.position, z: altitude } } : u)),
+  })),
+  setWorldHeight: (height: number) => set((state) => ({
+    world: { ...state.world, heightMeters: height },
   })),
 }));
 

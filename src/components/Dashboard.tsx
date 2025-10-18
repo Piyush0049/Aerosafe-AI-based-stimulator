@@ -52,17 +52,20 @@ const headingPitchToVector = (heading: number, pitch: number): Vector3 => {
 };
 
 
-function UavDetailsPanel({ uav, onBatteryChange, onDirectionChange, onClose }: { uav: Uav, onBatteryChange: (id: string, battery: number) => void, onDirectionChange: (id: string, direction: Vector3) => void, onClose: () => void }) {
+function UavDetailsPanel({ uav, onBatteryChange, onDirectionChange, onAltitudeChange, onClose }: { uav: Uav, onBatteryChange: (id: string, battery: number) => void, onDirectionChange: (id: string, direction: Vector3) => void, onAltitudeChange: (id: string, altitude: number) => void, onClose: () => void }) {
   const [battery, setBattery] = useState(uav.battery);
   const [heading, setHeading] = useState(0); // State for heading in degrees
   const [pitch, setPitch] = useState(0);     // State for pitch in degrees
+  const [altitude, setAltitude] = useState(uav.position.z);
+  const worldHeight = useSimStore((s) => s.world.heightMeters);
 
   // Synchronize internal heading/pitch state with uav.direction prop
   useEffect(() => {
     const { heading: newHeading, pitch: newPitch } = vectorToHeadingPitch(uav.direction);
     setHeading(newHeading);
     setPitch(newPitch);
-  }, [uav.direction]); // Re-run when uav.direction changes
+    setAltitude(uav.position.z);
+  }, [uav.direction, uav.position.z]); // Re-run when uav.direction or uav.position.z changes
 
   const handleBatteryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newBattery = Number(e.target.value);
@@ -84,6 +87,12 @@ function UavDetailsPanel({ uav, onBatteryChange, onDirectionChange, onClose }: {
     onDirectionChange(uav.id, newDirection);
   };
 
+  const handleAltitudeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newAltitude = Number(e.target.value);
+    setAltitude(newAltitude);
+    onAltitudeChange(uav.id, newAltitude);
+  };
+
   return (
     <div className="rounded-xl border border-black/10 dark:border-white/10 bg-white/60 dark:bg-white/5 p-4 backdrop-blur">
       <div className="flex items-center justify-between mb-3">
@@ -100,6 +109,11 @@ function UavDetailsPanel({ uav, onBatteryChange, onDirectionChange, onClose }: {
           <input type="range" min={0} max={100} value={battery} onChange={handleBatteryChange} className="w-full" />
           <div className="text-xs">{battery.toFixed(0)}%</div>
         </label>
+        <label className="space-y-1">
+          <div className="text-xs uppercase text-black/60 dark:text-white/60">Altitude (m)</div>
+          <input type="range" min={0} max={worldHeight} step={1} value={altitude} onChange={handleAltitudeChange} className="w-full" />
+          <div className="text-xs">{altitude.toFixed(0)}m</div>
+        </label>
         <div className="space-y-1">
           <div className="text-xs uppercase text-black/60 dark:text-white/60">Direction</div>
           <label>
@@ -115,7 +129,7 @@ function UavDetailsPanel({ uav, onBatteryChange, onDirectionChange, onClose }: {
 }
 
 export function Dashboard() {
-  const { alerts, running, start, stop, reset, settings, setSetting, uavs, setUavBattery, setUavDirection } = useSimStore();
+  const { alerts, running, start, stop, reset, settings, setSetting, uavs, setUavBattery, setUavDirection, setUavAltitude, world, setWorldHeight } = useSimStore();
   const [selectedUavId, setSelectedUavId] = useState<string | null>(null);
   const selectedUav = uavs.find((u) => u.id === selectedUavId);
 
@@ -174,6 +188,11 @@ export function Dashboard() {
               <input type="range" min={0} max={1} step={0.05} value={settings.avoidanceStrength} onChange={(e) => setSetting("avoidanceStrength", Number(e.target.value))} className="w-full" />
               <div className="text-xs">{settings.avoidanceStrength.toFixed(2)}</div>
             </label>
+            <label className="space-y-1">
+              <div className="text-xs uppercase text-black/60 dark:text-white/60">World Height (m)</div>
+              <input type="range" min={200} max={1000} step={1} value={world.heightMeters} onChange={(e) => setWorldHeight(Number(e.target.value))} className="w-full" />
+              <div className="text-xs">{world.heightMeters}m</div>
+            </label>
           </div>
         </div>
 
@@ -182,6 +201,7 @@ export function Dashboard() {
             uav={selectedUav}
             onBatteryChange={setUavBattery}
             onDirectionChange={setUavDirection}
+            onAltitudeChange={setUavAltitude}
             onClose={() => setSelectedUavId(null)}
           />
         ) : (

@@ -90,7 +90,8 @@ export function stepSimulation(uavs: Uav[], dtSec: number, settings: SimulationS
     let { x: vx, y: vy, z: vz } = u.velocity;
     if (x < -half || x > half) { vx = -vx; x = Math.max(-half, Math.min(half, x)); }
     if (y < -half || y > half) { vy = -vy; y = Math.max(-half, Math.min(half, y)); }
-    if (z < 0 || z > world.heightMeters) { vz = -vz; z = Math.max(0, Math.min(world.heightMeters, z)); }
+    if (z < 0) { vz = -vz; z = 0; }
+    if (z > world.heightMeters) { vz = -Math.abs(vz); z = world.heightMeters; }
     nextUavs[i] = { ...u, position: { x, y, z }, velocity: { x: vx, y: vy, z: vz } };
   }
 

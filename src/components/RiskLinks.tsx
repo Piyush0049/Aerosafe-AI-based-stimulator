@@ -23,7 +23,17 @@ export function RiskLinks() {
   return (
     <group>
       {pairs.map((p, idx) => (
-        <Line key={idx} points={[[p.a.position.x, p.a.position.z, p.a.position.y], [p.b.position.x, p.b.position.z, p.b.position.y]]} color="#ffb703" lineWidth={2} transparent opacity={0.6} />
+        <Line
+          key={idx}
+          points={[
+            [p.a.position.x, p.a.position.z, -p.a.position.y],
+            [p.b.position.x, p.b.position.z, -p.b.position.y],
+          ]}
+          color="#ffb703"
+          lineWidth={2}
+          transparent
+          opacity={0.6}
+        />
       ))}
     </group>
   );

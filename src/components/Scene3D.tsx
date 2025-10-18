@@ -38,13 +38,14 @@ function StabilizeControls() {
 
 export function Scene3D() {
   const { world, uavs, start } = useSimStore();
+  console.log(world);
 
   useEffect(() => {
     start();
   }, [start]);
 
-  const UAV_SCALE = 2.0; // Increase this to make gray cubes bigger
-  const SKY_SCALE = world.sizeMeters * 5; // Scale the sky to fully cover the ground
+  const UAV_SCALE = 3.0; // Size of UAV mesh only
+  const SKY_SCALE = world.sizeMeters * 10;
 
   return (
     <div className="w-full h-full rounded-t-xl overflow-hidden border border-black/10 dark:border-white/10 bg-white/40 dark:bg-black/20 backdrop-blur relative">
@@ -77,10 +78,8 @@ export function Scene3D() {
             rayleigh={3}
           />
 
-          <StableGrid size={world.sizeMeters} divisions={world.sizeMeters / (world.gridStepMeters || 100)} />
-
-          <group scale={[1, 1, -1]}>
-            {/* Green Ground */}
+          <group>
+            {/* Green Ground - centered at origin */}
             <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
               <planeGeometry args={[world.sizeMeters, world.sizeMeters]} />
               <meshStandardMaterial color="#2ecc71" />
@@ -88,14 +87,14 @@ export function Scene3D() {
 
             {/* Restricted Zones in RED */}
             {world.restrictedZones.map((z) => (
-              <ZoneMesh key={z.id} zone={z}/>
+              <ZoneMesh key={z.id} zone={z} />
             ))}
 
             <RiskLinks />
 
-            {/* UAVs and Trails */}
+            {/* UAVs and Trails - NO GROUP SCALING */}
             {uavs.map((u) => (
-              <group key={u.id} scale={[UAV_SCALE, UAV_SCALE, UAV_SCALE]}>
+              <group key={u.id}>
                 <UavMesh uav={u} />
                 <UavTrail uav={u} />
               </group>
@@ -126,7 +125,7 @@ export function Scene3D() {
           enableDamping
           dampingFactor={0.08}
           minDistance={120}
-          maxDistance={1600}
+          maxDistance={3000}
           enablePan={true}
         />
 
