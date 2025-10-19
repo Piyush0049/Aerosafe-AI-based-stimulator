@@ -102,7 +102,7 @@ export default function Home() {
             {[
               { number: "95%", label: "Collision Prevention Rate" },
               { number: "< 50ms", label: "Real-time Response" },
-              { number: "10+", label: "UAVs Monitored Daily" },
+              { number: "15+", label: "UAVs Monitored Daily" },
               { number: "24/7", label: "Continuous Monitoring" }
             ].map((stat, index) => (
               <div key={index} className="text-center">
