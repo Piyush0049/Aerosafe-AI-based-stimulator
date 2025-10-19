@@ -100,9 +100,9 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-6 sm:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
-              { number: "99.9%", label: "Collision Prevention Rate" },
+              { number: "95%", label: "Collision Prevention Rate" },
               { number: "< 50ms", label: "Real-time Response" },
-              { number: "500+", label: "UAVs Monitored Daily" },
+              { number: "10+", label: "UAVs Monitored Daily" },
               { number: "24/7", label: "Continuous Monitoring" }
             ].map((stat, index) => (
               <div key={index} className="text-center">

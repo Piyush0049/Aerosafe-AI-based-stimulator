@@ -3,10 +3,16 @@
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { Plane, LogIn, LogOut, Shield, Edit, Globe } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 export function Header() {
   const { data: session } = useSession();
   const isAuthed = Boolean(session?.user);
+  const pathname = usePathname();
+
+  const getLinkClass = (href: string) => {
+    return `hover:text-black dark:hover:text-white flex items-center gap-1 ${pathname === href ? "text-emerald-600" : ""}`;
+  };
 
   return (
     <div className="sticky top-0 z-40 w-full backdrop-blur bg-white/60 dark:bg-black/30 border-b border-black/10 dark:border-white/10">
@@ -20,13 +26,13 @@ export function Header() {
             </Link> */}
             {isAuthed && (
               <>
-                <Link href="/design" className="hover:text-black dark:hover:text-white flex items-center gap-1">
+                <Link href="/design" className={getLinkClass("/design")}>
                   <Edit size={16} />Design 2D
                 </Link>
-                <Link href="/design3d" className="hover:text-black dark:hover:text-white flex items-center gap-1">
+                <Link href="/design3d" className={getLinkClass("/design3d")}>
                   <Edit size={16} />Design 3D
                 </Link>
-                <Link href="/worlds" className="hover:text-black dark:hover:text-white flex items-center gap-1">
+                <Link href="/worlds" className={getLinkClass("/worlds")}>
                   <Globe size={16} />Worlds
                 </Link>
               </>
@@ -40,8 +46,8 @@ export function Header() {
           {isAuthed ? (
             <>
               <div className="hidden sm:flex items-center justify-center w-8 h-8 rounded-full bg-green-800 text-white font-semibold text-sm">
-  {session?.user?.email?.[0]?.toUpperCase() || ""}
-</div>
+                {session?.user?.email?.[0]?.toUpperCase() || ""}
+              </div>
 
 
               <button onClick={() => signOut()} className="sm:flex px-3 py-1.5 rounded-md bg-slate-800 text-white text-sm hover:bg-slate-900 hidden items-center gap-1">
